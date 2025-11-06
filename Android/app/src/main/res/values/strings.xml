@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Leaf Disease</string>
+    <!--<string name="url">https://leafdisease-371e5.web.app/</string>-->
+    <string name="url">http://192.168.1.8:3000/</string>
+    <string name="imageUriIntent">IMAGE_URI_INTENT</string>
+    <string name="plantNameTitle">Plant Name :</string>
+    <string name="diseaseCategoryTitle">Disease Category :</string>
+    <string name="diseaseNameTitle">Disease Name :</string>
+    <string name="healthy">Healthy</string>
+</resources>
