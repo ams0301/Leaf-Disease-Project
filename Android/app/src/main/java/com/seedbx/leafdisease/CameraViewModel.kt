@@ -184,6 +184,9 @@ class CameraViewModel:ViewModel() {
      */
     fun sortImageUri(imageUriDateList: Array<Pair<Uri,Long>>){
 
+        if(imageUriDateList.isEmpty())
+            return
+
         val thisWeek=getThisWeek(calendar)
         var startIdx=0
         var endIdx=getLast(imageUriDateList,startIdx,thisWeek)

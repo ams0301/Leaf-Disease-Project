@@ -8,13 +8,14 @@
     "serverstart": "DEBUG=leaf-disease:* npm run devstart"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "^4.16.4",
-    "jpeg-autorotate": "^7.1.1",
-    "morgan": "~1.9.1",
-    "multer": "^1.4.2",
-    "nodemon": "^2.0.7"
+    "cookie-parser": "~1.4.7",
+    "debug": "~4.4.0",
+    "express": "^4.21.2",
+    "morgan": "~1.12.1",
+    "multer": "^1.4.5-lts.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   },
   "main": "app.js",
   "author": "",

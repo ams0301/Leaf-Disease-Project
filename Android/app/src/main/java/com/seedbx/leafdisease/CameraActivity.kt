@@ -543,7 +543,6 @@ class CameraActivity : AppCompatActivity() {
             cameraViewModel.sortImageUri(cameraViewModel.imageUriDateList.toTypedArray())
         }
 
-        getImages(this, this, cameraViewModel.imageUriDateList)
         //connectWithPeekRecyclerView(cameraViewModel.imageUriDateList.toTypedArray())
         //connectWithRecyclerView(cameraViewModel.imageUriList.toTypedArray())
 

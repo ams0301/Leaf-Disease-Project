@@ -392,10 +392,11 @@ def image_augmentation(img):
 
 
 def load_model():
-    return tf.keras.models.load_model("data/plant_leaf_model")
+    model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','data','plant_leaf_model')
+    return tf.keras.models.load_model(model_path)
 
 
-''' 
+'''
 idx1="plant_name"
 
 idx2="disease_category"
@@ -413,15 +414,15 @@ def rotate_image(img):
 def convert_from_categorical(Y):
 
     '''
-    
+
     Convert from Categorical to Normal
-    
+
     Arguments:
     Y: Label in categorical form
-    
+
     Returns:
     Labels in non-categorical form
-    
+
     '''
 
     return np.argmax(Y,axis=-1)
@@ -429,7 +430,7 @@ def convert_from_categorical(Y):
 
 def predict_values(model, images, idx1, idx2, idx3):
 
-    path="/home/aayussss2101/Desktop/Leaf Disease/data/num_to_label_file.json"
+    path=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','data','num_to_label_file.json')
 
     with open(path) as json_file:
         num_to_label=json.load(json_file)
