@@ -4,6 +4,7 @@ import random
 import sys
 import json
 import os
+import difflib
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 from PIL import Image, ImageEnhance
@@ -428,6 +429,36 @@ def convert_from_categorical(Y):
     return np.argmax(Y,axis=-1)
 
 
+def get_prediction(predictions, output_names, expected):
+
+    '''
+
+    Returns the prediction array for the expected output name
+
+    Arguments:
+    predictions: Dict mapping model output names to prediction arrays
+    output_names: List of the model's actual output names
+    expected: Expected output name
+
+    Returns:
+    Prediction array for the expected output
+
+    '''
+
+    if expected in predictions:
+        return predictions[expected]
+
+    # Fall back to the closest actual output name (the model's Keras
+    # metadata contains a typo, 'disease_catetgory', so a direct
+    # match may not always be possible)
+    match=difflib.get_close_matches(expected,list(predictions.keys())+list(output_names),n=1)
+
+    if not match:
+        raise ValueError(f"Model output for '{expected}' not found")
+
+    return predictions[match[0]]
+
+
 def predict_values(model, images, idx1, idx2, idx3):
 
     path=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','data','num_to_label_file.json')
@@ -435,11 +466,15 @@ def predict_values(model, images, idx1, idx2, idx3):
     with open(path) as json_file:
         num_to_label=json.load(json_file)
 
-        predictions=model.predict(images)
+        # verbose=0 keeps the Keras progress bar off stdout,
+        # so that stdout contains only the JSON result
+        predictions=model.predict(images,verbose=0)
 
-        pred1=convert_from_categorical(predictions[idx1]).tolist()
-        pred2=convert_from_categorical(predictions[idx2]).tolist()
-        pred3=convert_from_categorical(predictions[idx3]).tolist()
+        output_names=model.output_names
+
+        pred1=convert_from_categorical(get_prediction(predictions,output_names,idx1)).tolist()
+        pred2=convert_from_categorical(get_prediction(predictions,output_names,idx2)).tolist()
+        pred3=convert_from_categorical(get_prediction(predictions,output_names,idx3)).tolist()
 
         m1=max(set(pred1),key=pred1.count)
         m2=max(set(pred2),key=pred2.count)
@@ -450,7 +485,7 @@ def predict_values(model, images, idx1, idx2, idx3):
 
 def predict(img_path, idx1, idx2, idx3):
 
-    img=Image.open(img_path)
+    img=Image.open(img_path).convert('RGB')
     imgs=rotate_image(img)
     model=load_model()
     bar=[]
