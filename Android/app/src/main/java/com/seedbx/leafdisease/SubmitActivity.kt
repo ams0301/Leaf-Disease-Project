@@ -20,11 +20,13 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.TimeUnit
 
 class SubmitActivity : AppCompatActivity() {
 
@@ -158,8 +160,16 @@ class SubmitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit)
 
+        /** A [OkHttpClient] with timeouts that accommodate the long-running model inference */
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+
         /** A [Retrofit] */
         val retrofit = Retrofit.Builder().baseUrl(getString(R.string.url))
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()).build()
         service = retrofit.create(APIService::class.java)
 

@@ -15,11 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.TimeUnit
 
 
 /*interface APIService{
@@ -125,7 +127,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val retrofit=Retrofit.Builder().baseUrl(getString(R.string.url)).addConverterFactory(GsonConverterFactory.create()).build()
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+
+        val retrofit=Retrofit.Builder().baseUrl(getString(R.string.url)).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build()
         service=retrofit.create(APIService::class.java)
 
         val builder = StrictMode.VmPolicy.Builder()
