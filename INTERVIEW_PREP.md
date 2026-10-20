@@ -3,6 +3,9 @@
 > A full-stack mobile + ML project: Android (Kotlin) app -> Node.js/Express backend -> Python/TensorFlow CNN serving.
 > This guide covers every component in depth, the bugs found and fixed (great war stories), design trade-offs,
 > and the interview questions students most often forget to prepare.
+>
+> **New to this project or to these concepts? Read `START_HERE.md` first** — it teaches the whole
+> system as a simple story, defines every term in plain English, and gives you word-for-word scripts.
 
 ---
 
